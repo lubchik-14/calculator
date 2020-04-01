@@ -1,0 +1,35 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+form {
+    margin: 10px;
+    width: 290px;
+    box-shadow: 0 0 3px #403e44
+}
+
+.value {
+    width: 285px;
+    font-size: 50px;
+    border: 0;
+    text-align: right;
+
+}
+
+.btn {
+    width: 70px;
+    height: 50px;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.colspan {
+    width: 142px;
+}
+
+.exp {
+    margin: 5px;
+    padding: 5px 0;
+    text-align: right;
+}
