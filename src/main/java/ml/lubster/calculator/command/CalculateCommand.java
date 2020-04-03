@@ -17,11 +17,11 @@ public class CalculateCommand implements Command {
 
     @Override
     public void execute() {
-        undoStack.push(current);
+//        undoStack.push(current);
     }
 
     @Override
     public void unExecute() {
-        redoStack.push(current);
+//        redoStack.push(current);
     }
 }

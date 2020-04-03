@@ -1,27 +1,32 @@
 package ml.lubster.calculator.controller;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import ml.lubster.calculator.model.Calculator;
-import ml.lubster.calculator.service.CalculatorService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
+import java.util.Map;
 
-@RestController
-@RequiredArgsConstructor
-@Slf4j
+@Controller
 public class CalculatorController {
-    private final CalculatorService service;
+//    private final CalculatorService service;
 
-    @PostMapping("/calculator")
+    @GetMapping(value = "/calculator")
     @ResponseBody
-    public ResponseEntity<Calculator> show() {
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ModelAndView getCalculator(@RequestParam Map<String,String> allParams) {
+        System.out.println("all params " + allParams.toString());
+        Calculator calculator = new Calculator();
+        calculator.setExpression("4+5");
+        calculator.setResult(12);
+
+        ModelAndView modelAndView = new ModelAndView("calculator",
+                new HashMap<>(Map.of("calc", calculator, "1", "1")),
+                HttpStatus.OK);
+        modelAndView.addObject("ottr", "ottr");
+        return modelAndView;
     }
-
-
 }

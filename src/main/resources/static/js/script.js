@@ -11,7 +11,8 @@ function addSymbol(symbol) {
             newCalculation = false;
         }
         value = getExp() + symbol;
-        setValue(calculate(value));
+        setValue(value);
+        // setValue(calculate(value));
         setExp(value);
     }
 }
@@ -31,7 +32,7 @@ function calculate(exp) {
 
 function equal() {
     newCalculation = true;
-    setExp(getValue());
+    // setExp(getValue());
 }
 
 function isAllowedAdding(symbol, exp) {
@@ -87,7 +88,7 @@ function isBracket(s) {
 }
 
 function isNumber(s) {
-    return !isOperator(s) && !isBracket(s) && s !== '.';
+    return !isOperator(s) && !isBracket(s) && s !== '.' && s !=='';
 }
 
 function getExp() {

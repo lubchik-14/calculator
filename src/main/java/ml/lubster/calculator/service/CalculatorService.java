@@ -11,21 +11,21 @@ import java.util.Stack;
 @Service
 @RequiredArgsConstructor
 public class CalculatorService {
-    private final Command calculateCommand;
+    private Command calculateCommand;
     private Stack<Map<String, Double>> undoStack;
     private Stack<Map<String, Double>> redoStack;
 
     public void calculateWasPushed() {
         calculateCommand.execute();
-        undoStack.push()
+//        undoStack.push()
     }
-
-    public void undoButtonWasPushed() {
-        undoCommand.undo();
-    }
-
-    public void redoButtonWasPushed() {
-        redoCommand.undo();
-    }
+//
+//    public void undoButtonWasPushed() {
+//        undoCommand.undo();
+//    }
+//
+//    public void redoButtonWasPushed() {
+//        redoCommand.undo();
+//    }
 
 }

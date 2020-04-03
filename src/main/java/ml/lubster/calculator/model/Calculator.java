@@ -1,10 +1,12 @@
 package ml.lubster.calculator.model;
 
-import java.util.Map;
-import java.util.Stack;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 public class Calculator {
-    private final Stack<Map<String, Double>> undoStack = new Stack<>();
-    private final Stack<Map<String, Double>> redoStack = new Stack<>();
-    private Map<String, Double> current;
+    private String expression;
+    private double result;
 }
+

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>or</title>
+    <script th:src="@{/js/script.js}"></script>
+</head>
+<body>
+
+<p th:text="${1}">result</p>
+<p th:text="${ottr}">expression</p>
+<p th:text="${calc.expression}">expression</p>
+
+<form name="calculator" action="/calculator" method="GET">
+<input id="exp" class="exp" name="exp" readonly="readonly">
+<input id="value" class="value" name="value" value="" readonly="readonly">
+<table>
+<tr>
+<td colspan="2"><input class="btn colspan" name="undo" type="submit" value="Undo"></td>
+<td colspan="2"><input class="btn colspan" name="redo" type="button" value="Redo"></td>
+</tr>
+<tr>
+<td><input class="btn" type="button" value="(" onclick="addSymbol('(')"></td>
+<td><input class="btn" type="button" value=")" onclick="addSymbol(')')"></td>
+<td><input class="btn" type="button" value="CE" onclick="clean()"></td>
+<td><input class="btn" type="button" value="/" onclick="addSymbol('/')"></td>
+</tr>
+<tr>
+<td><input class="btn" type="button" value="7" onclick="addSymbol(7)"></td>
+<td><input class="btn" type="button" value="8" onclick="addSymbol(8)"></td>
+<td><input class="btn" type="button" value="9" onclick="addSymbol(9)"></td>
+<td><input class="btn" type="button" value="*" onclick="addSymbol('*')"></td>
+</tr>
+<tr>
+<td><input class="btn" type="button" value="4" onclick="addSymbol(4)"></td>
+<td><input class="btn" type="button" value="5" onclick="addSymbol(5)"></td>
+<td><input class="btn" type="button" value="6" onclick="addSymbol(6)"></td>
+<td><input class="btn" type="button" value="-" onclick="addSymbol('-')"></td>
+</tr>
+<tr>
+<td><input class="btn" type="button" value="1" onclick="addSymbol(1)"></td>
+<td><input class="btn" type="button" value="2" onclick="addSymbol(2)"></td>
+<td><input class="btn" type="button" value="3" onclick="addSymbol(3)"></td>
+<td><input class="btn" type="button" value="+" onclick="addSymbol('+')"></td>
+</tr>
+<tr>
+<td colspan="2"><input class="btn colspan" type="button" value="0" onclick="addSymbol(0)"></td>
+<td><input class="btn" type="button" value="." onclick="addSymbol('.')"></td>
+<td><input class="btn" type="submit" value="=" onclick="equal()"></td>
+</tr>
+</table>
+</form>
+</body>
+</html>
