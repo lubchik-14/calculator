@@ -1,5 +1,10 @@
 package ml.lubster.calculator.model;
 
-public class Calculator {
+import java.util.Map;
+import java.util.Stack;
 
+public class Calculator {
+    private final Stack<Map<String, Double>> undoStack = new Stack<>();
+    private final Stack<Map<String, Double>> redoStack = new Stack<>();
+    private Map<String, Double> current;
 }

@@ -1,41 +1,37 @@
 const operations = ['/', '*', '+', '-'];
 const brackets = ['(', ')'];
-
-function isOperator(s) {
-    return operations.includes(s);
-}
-
-function isBracket(s) {
-    return brackets.includes(s);
-}
-
-function isNumber(s) {
-    return !isOperator(s) && !isBracket(s) && s !== '.';
-}
-
-function getExp() {
-    return document.getElementById('exp').innerText;
-}
-
-function setExp(newText) {
-    return document.getElementById('exp').innerText = newText;
-}
-
-function getValue() {
-    return document.getElementById('value').value;
-}
-
-function setValue(newValue) {
-    document.getElementById('value').value = newValue;
-}
+let newCalculation = false;
 
 function addSymbol(symbol) {
-    let exp = getExp();
-    if (isAllowedAdding(symbol, exp)) {
-        let value = exp + symbol;
+    resizeFont();
+    if (isAllowedAdding(symbol, getExp())) {
+        let value;
+        if (newCalculation) {
+            setExp("");
+            newCalculation = false;
+        }
+        value = getExp() + symbol;
         setValue(calculate(value));
         setExp(value);
     }
+}
+
+function clean() {
+    setExp("");
+    setValue("");
+}
+
+function calculate(exp) {
+    try {
+        return eval(exp);
+    } catch (e) {
+        return getValue();
+    }
+}
+
+function equal() {
+    newCalculation = true;
+    setExp(getValue());
 }
 
 function isAllowedAdding(symbol, exp) {
@@ -46,7 +42,7 @@ function isAllowedAdding(symbol, exp) {
             return true;
         }
     } else if (isOperator(symbol)) {
-        if (isNumber(last) || last === ')') {
+        if ((last !== '' || symbol === '-') && (isNumber(last) || last === ')')) {
             return true;
         }
     } else if (isBracket(symbol)) {
@@ -62,25 +58,50 @@ function isAllowedAdding(symbol, exp) {
             }
         }
     } else if (isNumber(symbol)) {
-        if (isNumber(last) || isOperator(last) || last === '(' || last === '') {
+        if (isNumber(last) || isOperator(last) || last === '(' || last === '' || last === '.') {
             return true;
         }
     }
     return false;
 }
 
-function clean() {
-    if (getExp() === null || getValue() === "") {
-        setExp("");
+function resizeFont() {
+    let length = document.getElementById('value').value.length;
+    let newLength = length;
+    if (length > 9 && length < 19) {
+        newLength = "27px";
+    } else if (length > 18) {
+        newLength = "16px";
+    } else if (length < 10) {
+        newLength = "50px"
     }
-    setValue("");
+    document.getElementById('value').style.fontSize = newLength;
 }
 
-function calculate(exp) {
-    try {
-        return eval(exp);
-    } catch (e) {
-        return getValue();
-    }
+function isOperator(s) {
+    return operations.includes(s);
 }
 
+function isBracket(s) {
+    return brackets.includes(s);
+}
+
+function isNumber(s) {
+    return !isOperator(s) && !isBracket(s) && s !== '.';
+}
+
+function getExp() {
+    return document.getElementById('exp').value;
+}
+
+function setExp(newText) {
+    return document.getElementById('exp').value = newText;
+}
+
+function getValue() {
+    return document.getElementById('value').value;
+}
+
+function setValue(newValue) {
+    document.getElementById('value').value = newValue;
+}

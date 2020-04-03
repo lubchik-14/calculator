@@ -8,8 +8,8 @@
 </head>
 
 <body>
-<form>
-    <div id="exp" class="exp" style="height: 25px"></div>
+<form name="calculator" action="/calculator" method="POST">
+    <input id="exp" class="exp" value="" readonly="readonly">
     <input id="value" class="value" value="" readonly="readonly">
     <table>
         <tr>
@@ -43,7 +43,7 @@
         <tr>
             <td colspan="2"><input class="btn colspan" type="button" value="0" onclick="addSymbol(0)"></td>
             <td><input class="btn" type="button" value="." onclick="addSymbol('.')"></td>
-            <td><input class="btn" type="button" value="="></td>
+            <td><input class="btn" type="submit" value="=" onclick="equal()"></td>
         </tr>
     </table>
 </form>
