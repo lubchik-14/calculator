@@ -1,13 +1,20 @@
-package ml.lubster.calculator.stackCalculator;
+package ml.lubster.calculator.service;
 
+import ml.lubster.calculator.model.Calculation;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
-public class Calculator {
-
-    public static Map<String, Integer> OPERATORS = new HashMap<>(Map.of(
+@Service
+@Validated
+public class RpnCalculatorService implements CalculatorService {
+    public final static Map<String, Integer> OPERATORS = new HashMap<>(Map.of(
             "+", 2,
             "-", 2,
             "*", 3,
@@ -15,19 +22,17 @@ public class Calculator {
             "(", 1,
             ")", -1));
 
-    public static String[] getTokens(String string) {
-        return Arrays.stream(string.split("(?<=[-+() */])|(?=[-+() */])"))
-                .filter(s -> !s.equals(" "))
-                .toArray(String[]::new);
+    public Calculation evaluate(String expression) {
+        return new Calculation(expression, rpnToResult(expressionToRpn(expression)));
     }
 
-    public static String expressionToRpn(String exp) {
+    private String expressionToRpn(String expression) {
         String rpn = "";
-        String[] tokens = getTokens(exp);
+        String[] tokens = getTokens(expression);
         Stack<String> stack = new Stack<>();
         int priority;
         for (String token : tokens) {
-            priority = getPriority(token);
+            priority = getTokenPriority(token);
 
             if (priority == 0) {
                 rpn = rpn + token;
@@ -42,7 +47,7 @@ public class Calculator {
             if (priority > 1) {
                 rpn = rpn + " ";
                 while (!stack.empty()) {
-                    if (getPriority(stack.peek()) >= priority) {
+                    if (getTokenPriority(stack.peek()) >= priority) {
                         rpn = rpn + stack.pop();
                     } else {
                         break;
@@ -53,7 +58,7 @@ public class Calculator {
             }
             if (priority == -1) {
                 rpn = rpn + " ";
-                while (getPriority(stack.peek()) != 1) {
+                while (getTokenPriority(stack.peek()) != 1) {
                     rpn = rpn + stack.pop();
                 }
                 stack.pop();
@@ -65,13 +70,12 @@ public class Calculator {
         return rpn;
     }
 
-    public static double RpnToResult(String rpn) {
-        String operand = "";
+    private double rpnToResult(@NotNull(message = "{invalid.no-expression}") String rpn) {
         String[] tokens = getTokens(rpn);
         Stack<Double> stack = new Stack<>();
         int priority;
         for (String token : tokens) {
-            priority = getPriority(token);
+            priority = getTokenPriority(token);
             if (priority == 0) {
                 stack.push(Double.parseDouble(token));
                 continue;
@@ -83,19 +87,19 @@ public class Calculator {
                 double result = 0;
                 switch (token) {
                     case "+": {
-                        result = add(a, b);
+                        result = b + a;
                         break;
                     }
                     case "-": {
-                        result = sub(a, b);
+                        result = b - a;
                         break;
                     }
                     case "*": {
-                        result = mul(a, b);
+                        result = b * a;
                         break;
                     }
                     case "/": {
-                        result = dev(a, b);
+                        result = b / a;
                         break;
                     }
                 }
@@ -105,32 +109,21 @@ public class Calculator {
         return stack.pop();
     }
 
-    private static double add(double a, double b) {
-        return a + b;
+    private String[] getTokens(@NotNull (message = "{invalid.no-expression}")
+                               @NotEmpty (message = "{invalid.no-expression}") String string) {
+        return Arrays.stream(string.split("(?<=[-+() */])|(?=[-+() */])"))
+                .filter(s -> !s.equals(" "))
+                .toArray(String[]::new);
     }
 
-
-    private static double sub(double a, double b) {
-        return a - b;
-    }
-
-
-    private static double mul(double a, double b) {
-        return a * b;
-    }
-
-    private static double dev(double a, double b) {
-        return a / b;
-    }
-
-    private static int getPriority(String token) {
+    private int getTokenPriority(String token) {
         if (!isNumber(token)) {
             return OPERATORS.get(token);
         }
         return 0;
     }
 
-    private static boolean isNumber(String str) {
+    private boolean isNumber(String str) {
         try {
             Double.parseDouble(str);
             return true;
@@ -138,6 +131,4 @@ public class Calculator {
             return false;
         }
     }
-
-
 }
