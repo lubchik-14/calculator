@@ -1,11 +1,13 @@
 package ml.lubster.calculator.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
-public class Calculator {
+@AllArgsConstructor
+public class Calculation {
     private String expression;
     private double result;
 }
