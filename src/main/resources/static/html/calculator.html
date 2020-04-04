@@ -4,15 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <title>or</title>
+    <title>Calculator</title>
     <script th:src="@{/js/script.js}"></script>
-    <link rel="stylesheet" href="d:\Hillel\calculator\src\main\resources\static\css\style.css">
-    <script src="d:\Hillel\calculator\src\main\resources\static\js\script.js"></script>
 </head>
 <body>
 <form name="calculator" action="/calculator" method="GET">
-    <input id="exp" class="exp" name="exp" th:value="${expression}" readonly="readonly">
-    <input id="value" class="value" name="value" th:value="${result}" readonly="readonly">
+    <input id="exp" class="exp" name="exp" th:value="${calculation.expression}" readonly="readonly">
+    <input id="value" class="value" name="value" th:value="${calculation.result}" readonly="readonly">
     <table>
         <tr>
             <td colspan="2"><input class="btn colspan" name="undo" type="submit" value="Undo"></td>
