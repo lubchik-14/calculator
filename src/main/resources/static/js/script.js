@@ -7,7 +7,8 @@ let newCalculation = false;
 document.addEventListener("DOMContentLoaded", ready);
 
 function ready() {
-
+    resizeFont();
+    renewCalculation(true);
 }
 
 function addSymbol(symbol) {
@@ -17,7 +18,7 @@ function addSymbol(symbol) {
         let value;
         if (newCalculation) {
             setExp("");
-            newCalculation = false;
+            renewCalculation(false);
         }
         value = getExp() + symbol;
         setValue(value);
@@ -28,10 +29,20 @@ function addSymbol(symbol) {
 function clean() {
     setExp("");
     setValue("");
+    renewCalculation(true);
+}
+
+function renewCalculation(bol) {
+    newCalculation = bol;
+    if (bol) {
+        document.getElementById('equal').setAttribute('disabled', 'disabled');
+    } else {
+        document.getElementById('equal').removeAttribute('disabled');
+    }
 }
 
 function equal() {
-    newCalculation = true;
+    renewCalculation(true);
 }
 
 function transformIfNecessary(symbol) {
