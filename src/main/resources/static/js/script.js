@@ -1,9 +1,18 @@
-const operations = ['/', '*', '+', '-'];
-const brackets = ['(', ')'];
+const SYMBOLS = {
+    operations: ['/', '*', '+', '-'],
+    brackets: ['(', ')']
+};
 let newCalculation = false;
+
+document.addEventListener("DOMContentLoaded", ready);
+
+function ready() {
+
+}
 
 function addSymbol(symbol) {
     resizeFont();
+    symbol = transformIfNecessary(symbol);
     if (isAllowedAdding(symbol, getExp())) {
         let value;
         if (newCalculation) {
@@ -12,7 +21,6 @@ function addSymbol(symbol) {
         }
         value = getExp() + symbol;
         setValue(value);
-        // setValue(calculate(value));
         setExp(value);
     }
 }
@@ -22,17 +30,38 @@ function clean() {
     setValue("");
 }
 
-function calculate(exp) {
-    try {
-        return eval(exp);
-    } catch (e) {
-        return getValue();
-    }
-}
-
 function equal() {
     newCalculation = true;
-    // setExp(getValue());
+}
+
+function transformIfNecessary(symbol) {
+    let last = getExp().substring(getExp().length - 1);
+
+    if (symbol === '.') {
+        if (isBracket(last) || isOperator(last) || last === "") {
+            setExp(getExp() + '0');
+            setValue(getValue() + '0');
+        }
+        return symbol;
+    }
+
+    if (symbol === "-") {
+        if (last === "+") {
+            return "-";
+        } else if (last === "-") {
+            return "+";
+        }
+    }
+
+    if (isBracket(symbol)) {
+        if (symbol === '(') {
+            if (isNumber(last)) {
+                setExp(getExp() + '*');
+                setValue(getValue() + '*');
+            }
+        }
+    }
+    return symbol;
 }
 
 function isAllowedAdding(symbol, exp) {
@@ -40,7 +69,17 @@ function isAllowedAdding(symbol, exp) {
 
     if (symbol === '.') {
         if (isNumber(last)) {
+            for (let i = exp.length - 1; i >= 0; i--) {
+                let ch = exp.charAt(i);
+                if (isOperator(ch) || isBracket(ch)) {
+                    return true;
+                } else if (ch === ".") {
+                    return false;
+                }
+            }
             return true;
+        } else {
+            return false;
         }
     } else if (isOperator(symbol)) {
         if ((last !== '' || symbol === '-') && (isNumber(last) || last === ')')) {
@@ -80,15 +119,15 @@ function resizeFont() {
 }
 
 function isOperator(s) {
-    return operations.includes(s);
+    return SYMBOLS.operations.includes(s);
 }
 
 function isBracket(s) {
-    return brackets.includes(s);
+    return SYMBOLS.brackets.includes(s);
 }
 
 function isNumber(s) {
-    return !isOperator(s) && !isBracket(s) && s !== '.' && s !=='';
+    return !isOperator(s) && !isBracket(s) && s !== '.' && s !== '';
 }
 
 function getExp() {

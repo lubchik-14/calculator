@@ -4,13 +4,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
-import java.util.stream.Collectors;
 
 public class Calculator {
-    public static String ADD = "+";
-    public static String MINUS = "-";
-    public static String MULT = "*";
-    public static String DEV = "/";
 
     public static Map<String, Integer> OPERATORS = new HashMap<>(Map.of(
             "+", 2,
