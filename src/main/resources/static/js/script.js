@@ -93,7 +93,8 @@ function isAllowedAdding(symbol, exp) {
             return false;
         }
     } else if (isOperator(symbol)) {
-        if ((last !== '' || symbol === '-') && (isNumber(last) || last === ')')) {
+        if ((symbol === "-" && (last === "" || last === '('))
+            || ((last !== '' || symbol === '-') && (isNumber(last) || last === ')'))) {
             return true;
         }
     } else if (isBracket(symbol)) {
