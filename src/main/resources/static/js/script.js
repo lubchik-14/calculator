@@ -2,6 +2,11 @@ const SYMBOLS = {
     operations: ['/', '*', '+', '-'],
     brackets: ['(', ')']
 };
+let history = {
+    actions: [],
+    position: 0
+};
+
 let newCalculation = false;
 
 document.addEventListener("DOMContentLoaded", ready);
@@ -21,25 +26,31 @@ function addSymbol(symbol) {
             renewCalculation(false);
         }
         value = getExp() + symbol;
-        setValue(value);
-        setExp(value);
+        setExpValue(value, value);
     }
 }
 
 function clean() {
     audioPlayClear();
-    setExp("");
-    setValue("");
+    setExpValue("", "");
     renewCalculation(true);
 }
 
 function renewCalculation(bol) {
     newCalculation = bol;
     if (bol) {
-        document.getElementById('equal').setAttribute('disabled', 'disabled');
+        setDisable("equal");
     } else {
-        document.getElementById('equal').removeAttribute('disabled');
+        setEnable("equal");
     }
+}
+
+function setDisable(elementId) {
+    document.getElementById(elementId).setAttribute('disabled', 'disabled');
+}
+
+function setEnable(elementId) {
+    document.getElementById(elementId).removeAttribute('disabled');
 }
 
 function equal1() {
@@ -52,8 +63,7 @@ function transformIfNecessary(symbol) {
 
     if (symbol === '.') {
         if (isBracket(last) || isOperator(last) || last === "") {
-            setExp(getExp() + '0');
-            setValue(getValue() + '0');
+            setExpValue(getExp() + '0', getValue() + '0');
         }
         return symbol;
     }
@@ -69,8 +79,7 @@ function transformIfNecessary(symbol) {
     if (isBracket(symbol)) {
         if (symbol === '(') {
             if (isNumber(last)) {
-                setExp(getExp() + '*');
-                setValue(getValue() + '*');
+                setExpValue(getExp() + '*', getValue() + '*');
             }
         }
     }
@@ -160,15 +169,55 @@ function setValue(newValue) {
     document.getElementById('value').value = newValue;
 }
 
+function setExpValue(newExp, newValue) {
+    setExp(newExp);
+    setValue(newValue);
+}
+
+
+function addToHistory() {
+    history.actions.push({
+        exp: getExp(),
+        value: getValue()
+    });
+    history.position = history.actions.length - 1;
+    setEnable("undo");
+    setDisable("redo");
+}
+
+function un() {
+    if (history.position - 1 >= 0) {
+        history.position--;
+        setExpValue(history.actions[history.position].exp, history.actions[history.position].value);
+        setEnable("redo");
+        if (history.position - 1 < 0) {
+            setDisable("undo");
+        }
+    }
+}
+
+function re() {
+    if (history.position + 1 <= history.actions.length - 1) {
+        history.position++;
+        setExpValue(history.actions[history.position].exp, history.actions[history.position].value);
+        setEnable("undo");
+        if (history.position + 1 > history.actions.length - 1) {
+            setDisable("redo");
+        }
+    }
+}
+
 function sendCalculateRequest() {
     audioPlayLoading();
-    var request = new XMLHttpRequest();
+    let request = new XMLHttpRequest();
     request.open('GET', '/calculate?exp=' + encodeURIComponent(getExp()), true);
     request.addEventListener('readystatechange', function () {
         if (request.readyState == 4) {
-            var result = JSON.parse(request.response);
+            let result = JSON.parse(request.response);
+            setValue(result.error);
             if (request.status == 200) {
                 setValue(result.calculation.result);
+                addToHistory();
             } else if (request.status == 400) {
                 alert(result.error);
             }
