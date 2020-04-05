@@ -1,10 +1,13 @@
 package ml.lubster.calculator.config;
 
+import ml.lubster.calculator.model.Calculation;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.ViewResolver;
@@ -22,6 +25,11 @@ import java.nio.charset.StandardCharsets;
 public class AppConfig {
     private ApplicationContext applicationContext;
     private static final String VIEWS = "";
+
+    @Bean
+    public Calculation getCalculation() {
+        return new Calculation();
+    }
 
     @Bean
     public MessageSource messageSource() {

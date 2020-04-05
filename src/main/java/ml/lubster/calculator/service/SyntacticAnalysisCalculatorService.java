@@ -4,13 +4,16 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import ml.lubster.calculator.exception.ParseException;
-import ml.lubster.calculator.model.Calculation;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
+import java.util.Locale;
 
 @Service
+@RequiredArgsConstructor
 public class SyntacticAnalysisCalculatorService implements CalculatorService {
+    private final MessageSource messageSource;
     private Token currentToken;
     private int currentIndex;
 
@@ -26,16 +29,16 @@ public class SyntacticAnalysisCalculatorService implements CalculatorService {
         private TokenType tokenType = TokenType.NONE;
     }
 
-    public Calculation evaluate(@NotNull(message = "{invalid.no-expression}") String exp) throws ParseException {
+    public double evaluate(@NotNull(message = "{invalid.no-expression}") String exp) throws ParseException {
         double result;
         currentIndex = 0;
         getNextToken(exp);
         if (isEnd(currentToken))
-            throw new ParseException("{invalid.no-expression}");
+            throw new ParseException(messageSource.getMessage("invalid.no-expression",null, Locale.getDefault()));
         result = AddOrSub(exp);
         if (!isEnd(currentToken))
-            throw new ParseException("{invalid.syntax}");
-        return new Calculation(exp, result);
+            throw new ParseException(messageSource.getMessage("invalid.syntax", null, Locale.getDefault()));
+        return result;
     }
 
     private void getNextToken(String exp) {
@@ -106,7 +109,7 @@ public class SyntacticAnalysisCalculatorService implements CalculatorService {
                     break;
                 case '/':
                     if (part == 0.0)
-                        throw new ParseException("{invalid.zero}");
+                        throw new ParseException(messageSource.getMessage("invalid.zero", null, Locale.getDefault()));
                     result /= part;
             }
         }
@@ -133,7 +136,7 @@ public class SyntacticAnalysisCalculatorService implements CalculatorService {
             getNextToken(exp);
             result = AddOrSub(exp);
             if (!currentToken.getValue().equals(")"))
-                throw new ParseException("{invalid.parentheses}");
+                throw new ParseException(messageSource.getMessage("invalid.parentheses", null, Locale.getDefault()));
             getNextToken(exp);
         } else
             result = getNumber(exp);
@@ -146,11 +149,11 @@ public class SyntacticAnalysisCalculatorService implements CalculatorService {
             try {
                 result = Double.parseDouble(currentToken.getValue());
             } catch (NumberFormatException exc) {
-                throw new ParseException("{invalid.syntax}");
+                throw new ParseException(messageSource.getMessage("invalid.syntax", null, Locale.getDefault()));
             }
             getNextToken(exp);
         } else {
-            throw new ParseException("{invalid.syntax}");
+            throw new ParseException(messageSource.getMessage("invalid.syntax", null, Locale.getDefault()));
         }
         return result;
     }

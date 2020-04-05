@@ -8,7 +8,7 @@ public class ParseException extends Exception {
         this.message = message;
     }
 
-    public String toString() {
+    public String getMessage() {
         return this.message;
     }
 }

@@ -27,6 +27,7 @@ function addSymbol(symbol) {
 }
 
 function clean() {
+    audioPlayClear();
     setExp("");
     setValue("");
     renewCalculation(true);
@@ -41,8 +42,9 @@ function renewCalculation(bol) {
     }
 }
 
-function equal() {
+function equal1() {
     renewCalculation(true);
+    sendCalculateRequest();
 }
 
 function transformIfNecessary(symbol) {
@@ -156,4 +158,34 @@ function getValue() {
 
 function setValue(newValue) {
     document.getElementById('value').value = newValue;
+}
+
+function sendCalculateRequest() {
+    audioPlayLoading();
+    var request = new XMLHttpRequest();
+    request.open('GET', '/calculate?exp=' + encodeURIComponent(getExp()), true);
+    request.addEventListener('readystatechange', function () {
+        if (request.readyState == 4) {
+            var result = JSON.parse(request.response);
+            if (request.status == 200) {
+                setValue(result.calculation.result);
+            } else if (request.status == 400) {
+                alert(result.error);
+            }
+        }
+    });
+    request.send();
+}
+
+function audioPlayLoading() {
+    audioPlay("/media/clear.mp3");
+}
+
+function audioPlayClear() {
+    audioPlay("/media/clear.mp3");
+}
+
+function audioPlay(url) {
+    let a = new Audio(url);
+    a.play();
 }

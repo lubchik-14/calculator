@@ -1,6 +1,5 @@
 package ml.lubster.calculator.service;
 
-import ml.lubster.calculator.model.Calculation;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -22,8 +21,8 @@ public class RpnCalculatorService implements CalculatorService {
             "(", 1,
             ")", -1));
 
-    public Calculation evaluate(String expression) {
-        return new Calculation(expression, rpnToResult(expressionToRpn(expression)));
+    public double evaluate(@NotNull(message = "{invalid.no-expression}") String expression) {
+        return rpnToResult(expressionToRpn(expression));
     }
 
     private String expressionToRpn(String expression) {

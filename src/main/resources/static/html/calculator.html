@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<html>
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" th:href="@{/css/style.css}">
@@ -9,8 +8,8 @@
 </head>
 <body>
 <form name="calculator" action="/calculator" method="GET">
-    <input id="exp" class="exp" name="exp" th:value="${calculation.expression}" readonly="readonly">
-    <input id="value" class="value" name="value" th:value="${calculation.result}" readonly="readonly">
+    <input id="exp" class="exp" name="exp"  readonly="readonly">
+    <input id="value" class="value" name="value" readonly="readonly">
     <table>
         <tr>
             <td colspan="2"><input class="btn colspan" name="undo" type="submit" value="Undo"></td>
@@ -43,7 +42,7 @@
         <tr>
             <td colspan="2"><input class="btn colspan" type="button" value="0" onclick="addSymbol(0)"></td>
             <td><input class="btn" type="button" value="." onclick="addSymbol('.')"></td>
-            <td><input id="equal" class="btn" type="submit" value="=" onclick="equal()"></td>
+            <td><input id="equal" class="btn" type="button" value="=" onclick="equal1();"></td>
         </tr>
     </table>
 </form>
