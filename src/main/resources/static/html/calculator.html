@@ -3,19 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/css/style.css">
-<!--    <link rel="stylesheet" href="D:\Hillel\calculator\src\main\resources\static\css\style.css">-->
     <title>Calculator</title>
     <script src="/js/script.js"></script>
-<!--    <script src="D:\Hillel\calculator\src\main\resources\static\js\script.js"></script>-->
 </head>
 <body>
-<form name="calculator" action="/calculator" method="GET">
+<div class="main">
     <input id="exp" class="exp" name="exp"  readonly="readonly">
-    <input id="value" class="value" name="value" readonly="readonly">
+    <input id="value" class="value" name="value">
+    <input id="message" class="message" name="message"  readonly="readonly">
     <table>
         <tr>
-            <td colspan="2"><input class="btn colspan" id="undo" type="button" value="Undo" disabled="disabled" onclick="un()"></td>
-            <td colspan="2"><input class="btn colspan" id="redo" type="button" value="Redo" disabled="disabled" onclick="re()"></td>
+            <td colspan="2"><input class="btn colspan" id="undo" type="button" value="Undo" disabled="disabled" onclick="undoBtn()"></td>
+            <td colspan="2"><input class="btn colspan" id="redo" type="button" value="Redo" disabled="disabled" onclick="reBtn()"></td>
         </tr>
         <tr>
             <td><input class="btn" type="button" value="(" onclick="addSymbol('(')"></td>
@@ -44,9 +43,9 @@
         <tr>
             <td colspan="2"><input class="btn colspan" type="button" value="0" onclick="addSymbol(0)"></td>
             <td><input class="btn" type="button" value="." onclick="addSymbol('.')"></td>
-            <td><input id="equal" class="btn" type="button" value="=" onclick="equal1();"></td>
+            <td><input id="equal" class="btn" type="button" value="=" onclick="calculate();"></td>
         </tr>
     </table>
-</form>
+</div>
 </body>
 </html>

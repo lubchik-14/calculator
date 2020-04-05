@@ -3,19 +3,35 @@
     padding: 0;
 }
 
-form {
+.main {
     margin: 10px;
     width: 290px;
     box-shadow: 0 0 3px #403e44
 }
 
-.value, .exp {
+.value, .exp, .message {
     margin-left: 2px;
     width: 285px;
     height: 60px;
     font-size: 50px;
     border: 0;
     text-align: right;
+}
+
+.value {
+    margin-top: 5px;
+}
+
+.exp, .message {
+    height: 30px;
+    font-size: 15px;
+}
+
+.message {
+    height: 17px;
+    font-weight: 600;
+    color: red;
+    text-shadow: #5f0000;
 }
 
 .btn {
@@ -27,8 +43,4 @@ form {
 
 .colspan {
     width: 142px;
-}
-
-.exp {
-    font-size: 15px;
 }

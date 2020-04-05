@@ -23,6 +23,7 @@ function addSymbol(symbol) {
         let value;
         if (newCalculation) {
             setExp("");
+            setMessage("");
             renewCalculation(false);
         }
         value = getExp() + symbol;
@@ -33,6 +34,7 @@ function addSymbol(symbol) {
 function clean() {
     audioPlayClear();
     setExpValue("", "");
+    setMessage("");
     renewCalculation(true);
 }
 
@@ -53,7 +55,7 @@ function setEnable(elementId) {
     document.getElementById(elementId).removeAttribute('disabled');
 }
 
-function equal1() {
+function calculate() {
     renewCalculation(true);
     sendCalculateRequest();
 }
@@ -169,6 +171,10 @@ function setValue(newValue) {
     document.getElementById('value').value = newValue;
 }
 
+function setMessage(newMessage) {
+    document.getElementById('message').value = newMessage;
+}
+
 function setExpValue(newExp, newValue) {
     setExp(newExp);
     setValue(newValue);
@@ -181,11 +187,13 @@ function addToHistory() {
         value: getValue()
     });
     history.position = history.actions.length - 1;
-    setEnable("undo");
-    setDisable("redo");
+    if (history.position > 0) {
+        setEnable("undo");
+        setDisable("redo");
+    }
 }
 
-function un() {
+function undoBtn() {
     if (history.position - 1 >= 0) {
         history.position--;
         setExpValue(history.actions[history.position].exp, history.actions[history.position].value);
@@ -196,7 +204,7 @@ function un() {
     }
 }
 
-function re() {
+function reBtn() {
     if (history.position + 1 <= history.actions.length - 1) {
         history.position++;
         setExpValue(history.actions[history.position].exp, history.actions[history.position].value);
@@ -214,12 +222,11 @@ function sendCalculateRequest() {
     request.addEventListener('readystatechange', function () {
         if (request.readyState == 4) {
             let result = JSON.parse(request.response);
-            setValue(result.error);
             if (request.status == 200) {
                 setValue(result.calculation.result);
                 addToHistory();
             } else if (request.status == 400) {
-                alert(result.error);
+                setMessage(result.error);
             }
         }
     });
@@ -227,11 +234,11 @@ function sendCalculateRequest() {
 }
 
 function audioPlayLoading() {
-    audioPlay("/media/clear.mp3");
+    // audioPlay("/media/clear.mp3");
 }
 
 function audioPlayClear() {
-    audioPlay("/media/clear.mp3");
+    // audioPlay("/media/clear.mp3");
 }
 
 function audioPlay(url) {
