@@ -9,5 +9,5 @@ import lombok.Setter;
 public class ExpressionResultResponse {
     private final Calculation calculation;
     @Setter
-    private String error;
+    private String error = "";
 }
