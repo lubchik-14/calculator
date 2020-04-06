@@ -31,6 +31,7 @@ public class InputController {
                 return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
             }
         }
+        response.setAllowed(true);
         calculation.setStatus(Calculation.CalculationStatus.IN_PROGRESS);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
