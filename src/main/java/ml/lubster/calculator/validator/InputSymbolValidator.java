@@ -25,8 +25,8 @@ public class InputSymbolValidator {
             if (isNumber(last) || isRightBracket(last)) {
                 return true;
             } else
-            return (isMinus(symbol) && (last.equals("") || isLeftBracket(last))) ||
-                    ((isMinus(symbol) || isPlus(symbol)) && last.equals(""));
+                return (isMinus(symbol) && (last.equals("") || isLeftBracket(last))) ||
+                        ((isMinus(symbol) || isPlus(symbol)) && last.equals(""));
         } else if (isBracket(symbol)) {
             if (isLeftBracket(symbol)) {
                 return isLeftBracket(last) || isOperator(last) || last.equals("");

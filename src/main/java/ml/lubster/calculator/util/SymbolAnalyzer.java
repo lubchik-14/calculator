@@ -17,6 +17,12 @@ public final class SymbolAnalyzer {
     public static void transformCalculationExpression(Calculation calculation, String symbol) {
         String last = getLast(calculation.getExpression());
 
+        if (calculation.getStatus().equals(Calculation.CalculationStatus.DONE)) {
+            if (!isOperator(symbol)) {
+                calculation.reset();
+            }
+        }
+
         if (isDelimiter(symbol) && (isBracket(last) || isOperator(last) || last.equals(""))) {
             calculation.setExpression(calculation.getExpression().concat("0"));
         } else if (!isNumber(symbol) && !isLeftBracket(symbol) && isOperator(last)) {
