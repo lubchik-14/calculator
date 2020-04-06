@@ -10,16 +10,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
+import static ml.lubster.calculator.util.SymbolAnalyzer.SYMBOLS;
+import static ml.lubster.calculator.util.SymbolAnalyzer.isNumber;
+
 @Service
 @Validated
 public class RpnCalculatorService implements CalculatorService {
     public final static Map<String, Integer> OPERATORS = new HashMap<>(Map.of(
-            "+", 2,
-            "-", 2,
-            "*", 3,
-            "/", 3,
-            "(", 1,
-            ")", -1));
+            SYMBOLS.get("OPERATORS").get("plus"), 2,
+            SYMBOLS.get("OPERATORS").get("minus"), 2,
+            SYMBOLS.get("OPERATORS").get("multiplication"), 3,
+            SYMBOLS.get("OPERATORS").get("division"), 3,
+            SYMBOLS.get("BRACKETS").get("left"), 1,
+            SYMBOLS.get("BRACKETS").get("right"), -1));
 
     public double evaluate(@NotNull(message = "{invalid.no-expression}") String expression) {
         return rpnToResult(expressionToRpn(expression));
@@ -120,14 +123,5 @@ public class RpnCalculatorService implements CalculatorService {
             return OPERATORS.get(token);
         }
         return 0;
-    }
-
-    private boolean isNumber(String str) {
-        try {
-            Double.parseDouble(str);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
     }
 }
