@@ -1,6 +1,7 @@
 package ml.lubster.calculator.config;
 
 import ml.lubster.calculator.model.Calculation;
+import ml.lubster.calculator.validator.InputSymbolValidator;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +28,11 @@ public class AppConfig {
     @Bean
     public Calculation getCalculation() {
         return new Calculation();
+    }
+
+    @Bean
+    public InputSymbolValidator getInputSymbolValidator() {
+        return new InputSymbolValidator();
     }
 
     @Bean
