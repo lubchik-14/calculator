@@ -20,4 +20,10 @@ public class Calculation {
         else
             return String.format("%s", result);
     }
+
+    public void reset() {
+        expression = "";
+        result = 0;
+        status = Calculation.CalculationStatus.NEW;
+    }
 }
