@@ -28,6 +28,7 @@ public class CalculateController {
                 calculation.setResult(syntacticAnalysisCalculatorService.evaluate(allParams.get("exp")));
                 resultResponse.setError("");
                 calculation.setStatus(Calculation.CalculationStatus.DONE);
+                resultResponse.setError("");
             } catch (ParseException e) {
                 calculation.setStatus(Calculation.CalculationStatus.ERROR);
                 System.err.println("Exception occurred: " + e);

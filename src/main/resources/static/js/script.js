@@ -146,6 +146,7 @@ function sendCalculateRequest() {
             if (request.status == 200) {
                 audioPlayResult();
                 setValue(result.calculation.result);
+                setMessage("");
                 addToHistory();
             } else if (request.status == 400) {
                 if (result.error === "Division by Zero") {
