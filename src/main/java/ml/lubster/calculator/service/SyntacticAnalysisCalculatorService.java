@@ -34,7 +34,7 @@ public class SyntacticAnalysisCalculatorService implements CalculatorService {
         currentIndex = 0;
         getNextToken(exp);
         if (isEnd(currentToken))
-            throw new ParseException(messageSource.getMessage("invalid.no-expression",null, Locale.getDefault()));
+            throw new ParseException(messageSource.getMessage("invalid.no-expression", null, Locale.getDefault()));
         result = AddOrSub(exp);
         if (!isEnd(currentToken))
             throw new ParseException(messageSource.getMessage("invalid.syntax", null, Locale.getDefault()));

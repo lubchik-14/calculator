@@ -108,8 +108,8 @@ public class RpnCalculatorService implements CalculatorService {
         return stack.pop();
     }
 
-    private String[] getTokens(@NotNull (message = "{invalid.no-expression}")
-                               @NotEmpty (message = "{invalid.no-expression}") String string) {
+    private String[] getTokens(@NotNull(message = "{invalid.no-expression}")
+                               @NotEmpty(message = "{invalid.no-expression}") String string) {
         return Arrays.stream(string.split("(?<=[-+() */])|(?=[-+() */])"))
                 .filter(s -> !s.equals(" "))
                 .toArray(String[]::new);
